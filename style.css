@@ -1,0 +1,996 @@
+/* ============================================================
+   ARUMUGA RAJA  — PORTFOLIO STYLES
+   A premium black & white (monochrome) design.
+   Sections are ordered top-to-bottom to match the HTML.
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   1. DESIGN TOKENS (variables)
+   Change a value here and it updates everywhere.
+   ------------------------------------------------------------ */
+:root {
+  /* Colours — a disciplined greyscale ramp (no pure #000/#fff) */
+  --bg:        #0a0a0a;                     /* page background      */
+  --bg-2:      #111111;                     /* raised surfaces      */
+  --ink:       #f5f5f5;                     /* main text            */
+  --ink-dim:   #a0a0a0;                     /* secondary text       */
+  --line:      rgba(255, 255, 255, 0.12);   /* hairline borders     */
+  --line-soft: rgba(255, 255, 255, 0.07);   /* fainter borders      */
+  --glass:     rgba(255, 255, 255, 0.04);   /* frosted glass fill   */
+
+  /* Typefaces (with safe fallbacks for offline use) */
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-body:    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono:    "JetBrains Mono", "SF Mono", Consolas, "Courier New", monospace;
+
+  /* Layout */
+  --maxw: 1120px;                 /* max content width */
+  --radius: 14px;                 /* rounded corners   */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);   /* smooth easing */
+}
+
+
+/* ------------------------------------------------------------
+   2. RESET & BASE
+   ------------------------------------------------------------ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.65;
+  overflow-x: hidden;             /* no sideways scroll */
+  /* A soft vignette adds depth without adding colour */
+  background-image: radial-gradient(120% 80% at 50% -10%, #171717 0%, var(--bg) 55%);
+}
+
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
+img { max-width: 100%; display: block; }
+
+/* Nice text-selection colour (white block, dark text) */
+::selection { background: var(--ink); color: var(--bg); }
+
+/* Centres content and adds side padding on small screens */
+.container {
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Subtle custom scrollbar (monochrome) */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 20px; }
+::-webkit-scrollbar-thumb:hover { background: #3a3a3a; }
+
+
+/* ------------------------------------------------------------
+   3. BACKGROUND LAYERS
+   The canvas and the drifting formulas live behind everything.
+   ------------------------------------------------------------ */
+#particles {
+  position: fixed;
+  inset: 0;                       /* top/right/bottom/left = 0 */
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;           /* never blocks clicks */
+}
+
+#formulas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Each floating formula (these <span>s are created in script.js).
+   The travel direction is supplied per-element by script.js through
+   CSS variables (--fx/--fy = start offset, --tx/--ty = end offset),
+   so every symbol drifts along its own independent route. */
+.formula {
+  position: absolute;
+  font-family: var(--font-mono);
+  color: rgba(255, 255, 255, 0.09);   /* very faint so it stays calm */
+  white-space: nowrap;
+  user-select: none;
+  will-change: transform, opacity;
+  animation: floatDrift linear infinite;
+}
+
+/* Drift from a start offset to an end offset (both set per-element in JS),
+   fading gently in and out at the ends of the path. Fallback values keep
+   the original upward drift if the variables are ever missing. */
+@keyframes floatDrift {
+  0%   { transform: translate(var(--fx, 0), var(--fy, 20px));  opacity: 0; }
+  15%  { opacity: 1; }
+  85%  { opacity: 1; }
+  100% { transform: translate(var(--tx, 0), var(--ty, -60px)); opacity: 0; }
+}
+
+
+/* ------------------------------------------------------------
+   4. BUTTONS (shared)
+   ------------------------------------------------------------ */
+.btn {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  padding: 14px 26px;
+  border-radius: 100px;           /* pill shape */
+  border: 1px solid var(--ink);
+  cursor: pointer;
+  transition: transform 0.35s var(--ease), background 0.35s var(--ease),
+              color 0.35s var(--ease), box-shadow 0.35s var(--ease);
+}
+
+/* White button, dark text — the primary action */
+.btn-primary {
+  background: var(--ink);
+  color: var(--bg);
+}
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(255, 255, 255, 0.15);
+}
+
+/* Transparent button with an outline — the secondary action */
+.btn-ghost {
+  background: transparent;
+  color: var(--ink);
+}
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-3px);
+}
+
+.btn-block { width: 100%; text-align: center; }
+
+
+/* ------------------------------------------------------------
+   5. NAVBAR
+   ------------------------------------------------------------ */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;                 /* BUGFIX: sit above the scrolling page content (main/footer use z-index:2) */
+  padding: 20px 0;
+  transition: padding 0.35s var(--ease), background 0.35s var(--ease),
+              border-color 0.35s var(--ease);
+  border-bottom: 1px solid transparent;
+}
+
+/* JavaScript adds .scrolled once the page moves down a little */
+.navbar.scrolled {
+  padding: 12px 0;
+  background: rgba(10, 10, 10, 0.72);
+  backdrop-filter: blur(14px);            /* frosted glass effect */
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.nav-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* The "AR" logo */
+.logo {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 1.15rem;
+  letter-spacing: 0.06em;
+  border: 1px solid var(--line);
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: background 0.3s var(--ease), color 0.3s var(--ease);
+}
+.logo:hover { background: var(--ink); color: var(--bg); }
+
+.nav-links {
+  display: flex;
+  gap: 34px;
+}
+.nav-links a {
+  font-size: 0.9rem;
+  color: var(--ink-dim);
+  position: relative;
+  padding: 4px 0;
+  transition: color 0.3s var(--ease);
+}
+.nav-links a:hover { color: var(--ink); }
+
+/* Growing underline on hover, and on the currently active link */
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s var(--ease);
+}
+.nav-links a:hover::after,
+.nav-links a.active::after { transform: scaleX(1); }
+.nav-links a.active { color: var(--ink); }
+
+/* Hamburger button — hidden on desktop, shown on mobile */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+}
+.hamburger span {
+  width: 24px;
+  height: 2px;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: transform 0.35s var(--ease), opacity 0.25s var(--ease);
+}
+/* When open, the three bars morph into an "X" */
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+
+/* ------------------------------------------------------------
+   6. HERO SECTION
+   ------------------------------------------------------------ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 170px 0 80px;
+  position: relative;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;   /* text | visual */
+  gap: 60px;
+  align-items: center;
+}
+
+/* Small tracked-out label above the title */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin-bottom: 22px;
+}
+.hero-greeting {
+  font-size: 1.4rem;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+
+/* The big name — fluid size with clamp() so it scales smoothly */
+.hero-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  margin-bottom: 35px;
+  white-space: nowrap;
+}
+
+.hero-subtitle {
+  font-family: var(--font-mono);
+  font-size: clamp(0.85rem, 1.6vw, 1.05rem);
+  color: var(--ink);
+  letter-spacing: 0.02em;
+  padding-left: 16px;
+  border-left: 2px solid var(--line);     /* small quote-style bar */
+  margin-bottom: 28px;
+}
+
+.hero-intro {
+  color: var(--ink-dim);
+  max-width: 46ch;
+  margin-bottom: 38px;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* --- Hero visual: the 3D cube + candlestick chart --- */
+.hero-visual {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
+  min-height: 420px;
+  justify-content: center;
+}
+
+/* The stage that gives the cube its 3D perspective */
+.cube-scene {
+  width: 150px;
+  height: 150px;
+  perspective: 900px;
+}
+.cube {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;           /* lets faces sit in 3D */
+  animation: spinCube 26s ease-in-out infinite;
+}
+/* Slow, multi-axis tumble (X + Y + slight Z) so the cube feels like it
+   drifts naturally in 3D space rather than spinning on one fixed axis. */
+@keyframes spinCube {
+  0% {
+    transform: rotateX(-18deg) rotateY(0deg) rotateZ(0deg);
+  }
+  25% {
+    transform: rotateX(25deg) rotateY(90deg) rotateZ(4deg);
+  }
+  50% {
+    transform: rotateX(-12deg) rotateY(180deg) rotateZ(-4deg);
+  }
+  75% {
+    transform: rotateX(18deg) rotateY(270deg) rotateZ(3deg);
+  }
+  100% {
+    transform: rotateX(-18deg) rotateY(360deg) rotateZ(0deg);
+  }
+}
+/* Shared look for all six faces (frosted glass panels) */
+.cube-face {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 2rem;
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(2px);
+}
+/* Place each face in 3D space (half of 150px = 75px) */
+.front  { transform: translateZ(75px); }
+.back   { transform: rotateY(180deg) translateZ(75px); }
+.right  { transform: rotateY(90deg)  translateZ(75px); }
+.left   { transform: rotateY(-90deg) translateZ(75px); }
+.top    { transform: rotateX(90deg)  translateZ(75px); }
+.bottom { transform: rotateX(-90deg) translateZ(75px); }
+
+/* The candlestick chart panel */
+.chart {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  height: 260px;
+  padding: 22px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  background: var(--glass);
+  backdrop-filter: blur(6px);
+}
+
+.candles {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 100%;
+  gap: 16px;
+}
+
+/* One candle = a thin wick + a rectangular body (built in script.js) */
+.candle {
+  position: relative;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 100%;
+  animation: candlePulse 3.5s ease-in-out infinite;   /* the "live" wobble */
+}
+.candle .wick {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;                       /* start value; script.js sets the real low */
+  width: 3px;
+  background: rgba(255, 255, 255, 0.65);
+}
+.candle .body {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;                       /* start value; script.js sets open/close */
+  width: 34px;                      /* wider, more solid candle look */
+  border-radius: 2px;
+}
+
+/* Up candles = hollow (outline). Down candles = filled. Stays monochrome. */
+.candle.up   .body { background: transparent; border: 2px solid var(--ink); }
+.candle.down .body { background: rgba(255, 255, 255, 0.85); border: 1px solid rgba(255, 255, 255, 0.85); }
+
+/* Gentle rise/fall so the chart feels alive but calm */
+@keyframes candlePulse {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+.chart-label {
+  position: absolute;
+  top: 10px; left: 14px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--ink-dim);
+}
+
+/* "Scroll" hint at the bottom of the hero */
+.scroll-hint {
+  position: absolute;
+  bottom: 26px; left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  color: var(--ink-dim);
+}
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(var(--ink-dim), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(0.7); }
+  50%      { opacity: 1;   transform: scaleY(1); }
+}
+
+
+/* ------------------------------------------------------------
+   7. GENERIC SECTION HEADINGS
+   Shared by About, Skills, Projects and Contact.
+   ------------------------------------------------------------ */
+.section { padding: 110px 0; scroll-margin-top: 130px; }
+
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.9rem, 4.5vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin: 14px 0 50px;
+  max-width: 18ch;
+}
+
+
+/* ------------------------------------------------------------
+   8. ABOUT SECTION
+   ------------------------------------------------------------ */
+/* Intro paragraph now sits above the cards, full width */
+.about-copy { max-width: 64ch; margin-bottom: 46px; }
+.about-copy p { color: var(--ink-dim); margin-bottom: 20px; }
+.about-copy strong { color: var(--ink); font-weight: 600; }
+
+/* Fact CARDS in a responsive row — glassmorphism, no progress bar.
+   auto-fit = fit 4 across on desktop, then wrap on tablet/mobile. */
+.about-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 22px;
+}
+.fact-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 28px 26px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  background: var(--glass);
+  backdrop-filter: blur(8px);            /* the frosted "glass" look */
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 0.4s var(--ease), border-color 0.4s var(--ease),
+              background 0.4s var(--ease);
+}
+.fact-card:hover {                       /* same gentle lift as the skill cards */
+  transform: translateY(-6px);
+  border-color: rgba(255, 255, 255, 0.774);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Small stagger so the cards reveal one after another (optional polish) */
+.about-facts .fact-card:nth-child(2) { transition-delay: 0.08s; }
+.about-facts .fact-card:nth-child(3) { transition-delay: 0.16s; }
+.about-facts .fact-card:nth-child(4) { transition-delay: 0.24s; }
+
+.fact-key {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.fact-val { color: var(--ink); font-size: 1.02rem; line-height: 1.4; }
+
+
+/* ------------------------------------------------------------
+   ABOUT STATS SECTION
+   ------------------------------------------------------------ */
+.stats-section {
+  padding: 10px 0 110px;
+  margin-top: -60px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.stat-card {
+  text-align: center;
+  padding: 34px 26px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  background: var(--glass);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 0.4s var(--ease),
+              border-color 0.4s var(--ease),
+              background 0.4s var(--ease);
+}
+
+.stat-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255, 255, 255, 0.774);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.stat-card h3 {
+  font-family: var(--font-display);
+  font-size: clamp(2.3rem, 5vw, 3.2rem);
+  line-height: 1;
+  color: var(--ink);
+  margin-bottom: 14px;
+}
+
+.stat-card p {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-dim);
+}
+
+/* Mobile */
+@media (max-width: 760px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-section {
+    padding: 10px 0 70px;
+  }
+}
+
+/* ------------------------------------------------------------
+   9. SKILLS SECTION (glassmorphism cards + progress bars)
+   ------------------------------------------------------------ */
+.skills-grid {
+  display: grid;
+  /* auto-fit makes the number of columns respond to screen width */
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 22px;
+}
+
+.skill-card {
+  position: relative;
+  padding: 30px 26px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  background: var(--glass);
+  backdrop-filter: blur(8px);           /* the "glass" look */
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 0.4s var(--ease), border-color 0.4s var(--ease),
+              background 0.4s var(--ease);
+}
+.skill-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255, 255, 255, 0.774);
+  background: rgba(255, 255, 255, 0.06);
+}
+.skill-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.35rem;
+  margin-bottom: 10px;
+}
+.skill-desc {
+  color: var(--ink-dim);
+  font-size: 0.9rem;
+  margin-bottom: 22px;
+  min-height: 60px;                     /* keeps card heights aligned */
+}
+
+/* The track and the fill of the progress bar */
+.bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  width: 0;                             /* starts empty… */
+  background: var(--ink);
+  border-radius: 100px;
+  /* …and animates to its final width (set by JavaScript) */
+  transition: width 1.4s var(--ease);
+}
+.skill-percent {
+  display: block;
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-dim);
+  text-align: right;
+}
+
+
+/* ------------------------------------------------------------
+   10. PROJECTS SECTION
+   ------------------------------------------------------------ */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+}
+
+.project-card {
+  position: relative;
+  padding: 34px 30px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  background: var(--bg-2);
+  overflow: hidden;
+  transition: transform 0.4s var(--ease), border-color 0.4s var(--ease);
+}
+.project-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255, 255, 255, 0.774);
+}
+/* A faint sweep of light appears on hover (top edge) */
+.project-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--ink), transparent);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+}
+.project-card:hover::before { opacity: 0.7; }
+
+.project-no {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink-dim);
+}
+.project-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.5rem;
+  margin: 10px 0 12px;
+}
+.project-desc {
+  color: var(--ink-dim);
+  font-size: 0.92rem;
+  margin-bottom: 22px;
+}
+/* Small pill tags for the tools used */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.tags span {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--ink-dim);
+  border: 1px solid var(--line);
+  padding: 4px 12px;
+  border-radius: 100px;
+}
+.project-link {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--ink);
+  transition: letter-spacing 0.3s var(--ease), opacity 0.3s var(--ease);
+}
+.project-link:hover { letter-spacing: 0.04em; opacity: 0.8; }
+
+
+/* ------------------------------------------------------------
+   11. CONTACT SECTION
+   ------------------------------------------------------------ */
+.contact-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.contact-layout {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  gap: 25px;
+}
+
+.contact-right {
+  width: 100%;
+  max-width: 560px;
+}
+
+.contact-right .eyebrow {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.contact-socials {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 25px;
+}
+
+.social-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.2rem;
+}
+
+.contact-form {
+  padding: 34px;
+  border: 1px solid var(--line-soft);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.035);
+  backdrop-filter: blur(8px);
+}
+
+.field {
+  margin-bottom: 20px;
+}
+
+.field label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin-bottom: 8px;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  padding: 14px 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  color: var(--ink);
+} 
+
+/* ------------------------------------------------------------
+   12. FOOTER
+   ------------------------------------------------------------ */
+.footer {
+  padding: 40px 0;
+  border-top: 1px solid var(--line-soft);
+}
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.footer p {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-dim);
+}
+
+
+/* ------------------------------------------------------------
+   13. SCROLL-REVEAL UTILITY
+   Elements with .reveal start hidden and fade up when they
+   enter the screen (script.js adds .visible).
+   ------------------------------------------------------------ */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Clear keyboard focus outline for accessibility */
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ------------------------------------------------------------
+   14. RESPONSIVE — TABLET
+   ------------------------------------------------------------ */
+@media (max-width: 900px) {
+  .contact-layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+/* ------------------------------------------------------------
+   15. RESPONSIVE — MOBILE (hamburger menu turns on here)
+   ------------------------------------------------------------ */
+@media (max-width: 760px) {
+  .hamburger { display: flex; }
+
+  /* The links become a dropdown panel that slides open */
+  .nav-links {
+    position: fixed;
+    top: 0; right: 0;
+    height: 100vh;
+    width: min(72vw, 300px);
+    flex-direction: column;
+    justify-content: center;
+    gap: 30px;
+    padding: 40px;
+    background: rgba(10, 10, 10, 0.96);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-left: 1px solid var(--line);
+    /* Hidden off-screen until opened */
+    transform: translateX(100%);
+    transition: transform 0.45s var(--ease);
+  }
+  .nav-links.open { transform: translateX(0); }
+  .nav-links a { font-size: 1.15rem; color: var(--ink); }
+
+  /* Projects go single-column on phones */
+  .projects-grid { grid-template-columns: 1fr; }
+
+  .section {padding: 90px 0;}
+  .hero { padding: 110px 0 40px; }
+  .skill-desc { min-height: auto; }
+}
+
+
+/* ------------------------------------------------------------
+   16. REDUCED MOTION
+   Respect people who prefer little or no animation.
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+}
+
+@media (max-width: 760px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 45px;
+    text-align: center;
+  }
+
+  .hero-title {
+    white-space: normal;
+    font-size: clamp(2.3rem, 13vw, 3.4rem);
+  }
+
+  .hero-subtitle {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .hero-intro {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-buttons {
+    justify-content: center;
+  }
+
+  .hero-visual {
+    min-height: 330px;
+    gap: 35px;
+  }
+
+  .cube-scene {
+    width: 110px;
+    height: 110px;
+  }
+
+  .cube-face {
+    width: 110px;
+    height: 110px;
+  }
+
+  .front { transform: translateZ(55px); }
+  .back { transform: rotateY(180deg) translateZ(55px); }
+  .right { transform: rotateY(90deg) translateZ(55px); }
+  .left { transform: rotateY(-90deg) translateZ(55px); }
+  .top { transform: rotateX(90deg) translateZ(55px); }
+  .bottom { transform: rotateX(-90deg) translateZ(55px); }
+
+  .chart {
+    height: 210px;
+    padding: 18px;
+  }
+
+  .candles {
+    gap: 8px;
+  }
+
+  .candle .body {
+    width: 22px;
+  }
+
+  .contact-form {
+    padding: 24px 18px;
+  }
+}

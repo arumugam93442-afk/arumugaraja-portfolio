@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  PERSONAL PORTFOLIO  —  Arumuga Raja 
+  Built with plain HTML, CSS and JavaScript (no frameworks).
+  Files:  index.html  +  style.css  +  script.js
+  Just open this file in a browser to view the site.
+  ============================================================
+-->
+<html lang="en">
+<head>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<meta charset="UTF-8" />
+  <!-- Makes the layout scale correctly on phones and tablets -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arumuga Raja  — Quantitative Researcher</title>
+  <meta name="description" content="Portfolio of Arumuga Raja , an aspiring Quantitative Researcher and Data Analytics enthusiast." />
+
+  <!--
+    Google Fonts (needs internet the first time; if offline the browser
+    quietly falls back to the system fonts listed in style.css).
+    Fraunces  = elegant serif for headings
+    Inter     = clean sans-serif for body text
+    JetBrains Mono = monospace for code / formulas / labels
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Our stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- ========================================================
+       ANIMATED BACKGROUND LAYERS
+       These sit behind everything (see z-index in style.css).
+       1) canvas  -> moving white particles
+       2) #formulas -> drifting math/physics symbols (added by JS)
+       ======================================================== -->
+  <canvas id="particles"></canvas>
+  <div id="formulas" aria-hidden="true"></div>
+
+
+  <!-- ========================================================
+       1. NAVBAR
+       Fixed to the top. Logo on the left, links on the right,
+       and a hamburger button that appears on small screens.
+       ======================================================== -->
+  <header class="navbar" id="navbar">
+    <nav class="nav-inner">
+      <!-- Logo -->
+      <a href="#home" class="logo">AR</a>
+
+      <!-- Navigation links (also used as the mobile dropdown) -->
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+
+      <!-- Hamburger button (three bars turn into an X when open) -->
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+  </header>
+
+
+  <main>
+    <!-- ========================================================
+         2. HERO SECTION
+         Big name, subtitle, short intro and two buttons on the
+         left. On the right is the "signature" visual:
+         a rotating 3D cube above an animated candlestick chart.
+         ======================================================== -->
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+
+        <!-- Left: the text -->
+        <div class="hero-text reveal">
+        
+           <p class="hero-greeting">Hello, I'm</p>
+
+          <h1 class="hero-title">Arumuga Raja </h1>
+
+          <p class="hero-subtitle">Quantitative Researcher &amp; Data Analytics</p>
+
+          <p class="hero-intro">
+            A final-year B.Tech student in Artificial Intelligence &amp; Data Science,
+            drawn to the point where mathematics meets the markets. I study data,
+            build simple models, and explore how quantitative methods help explain
+            financial behaviour.
+          </p>
+
+          <!-- Call-to-action buttons -->
+          <div class="hero-buttons">
+            <a href="#projects" class="btn btn-primary">View Projects</a>
+            <a href="#contact" class="btn btn-ghost">Contact Me</a>
+          </div>
+        </div>
+
+        <!-- Right: the animated visual -->
+        <div class="hero-visual reveal" aria-hidden="true">
+
+          <!-- 3D rotating cube. Each face shows a math symbol. -->
+          <div class="cube-scene">
+            <div class="cube">
+              <div class="cube-face front">∑</div>
+              <div class="cube-face back">∫</div>
+              <div class="cube-face right">σ²</div>
+              <div class="cube-face left">μ</div>
+              <div class="cube-face top">β</div>
+              <div class="cube-face bottom">α</div>
+            </div>
+          </div>
+
+          <!-- Animated candlestick chart. Candles are added by JavaScript. -->
+          <div class="chart">
+            <div class="candles" id="candles"></div>
+            <span class="chart-label">MARKET&nbsp;DATA</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Small "scroll" hint at the bottom of the hero -->
+      <div class="scroll-hint" aria-hidden="true">
+        <span>Scroll</span>
+        <span class="scroll-line"></span>
+      </div>
+    </section>
+
+
+    <!-- ========================================================
+         3. ABOUT SECTION
+         ======================================================== -->
+    <!-- ========================================================
+     3. ABOUT SECTION
+     ======================================================== -->
+<section class="section" id="about">
+  <div class="container">
+    <p class="eyebrow reveal">About ME</p>
+    <h2 class="section-title reveal">WHO AM I ?</h2>
+
+    <!-- Intro paragraph (unchanged) -->
+    <div class="about-copy reveal">
+      <p>
+        I am an aspiring <strong>Quantitative Researcher</strong> and
+        <strong>Data Analytics</strong>, currently in my final
+        year of B.Tech in Artificial Intelligence &amp; Data Science. My
+        curiosity sits at the intersection of mathematics, computing and
+        the financial markets — I enjoy asking why prices move and whether
+        data can offer an honest answer.
+      </p>
+    </div>
+
+    <!-- Fact CARDS in a row (like the skills cards, just without a progress bar).
+         Each fact is now its own <article> card instead of a list row. -->
+    <div class="about-facts">
+      <article class="fact-card reveal">
+        <span class="fact-key">Education</span>
+        <span class="fact-val">B.Tech AI &amp; DS · Final Year</span>
+      </article>
+
+      <article class="fact-card reveal">
+        <span class="fact-key">College</span>
+        <span class="fact-val">Sardar Raja College of Engineering (2023-2027)</span>
+      </article>
+
+      <article class="fact-card reveal">
+        <span class="fact-key">Focus</span>
+        <span class="fact-val">Quantitative research · Financial data</span>
+      </article>
+
+      <article class="fact-card reveal">
+        <span class="fact-key">Toolkit</span>
+        <span class="fact-val">Python · Power BI · Excel · Maths</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="stats-section">
+  <div class="container stats-grid">
+
+    <article class="stat-card reveal">
+      <h3>1+</h3>
+      <p>Project's</p>
+    </article>
+
+    <article class="stat-card reveal">
+      <h3>2+</h3>
+      <p>Internship's</p>
+    </article>
+
+    <article class="stat-card reveal">
+      <h3>10+</h3>
+      <p>Skill's</p>
+    </article>
+
+  </div>
+</section>
+
+
+    <!-- ========================================================
+         4. SKILLS SECTION
+         Four glassmorphism cards with animated progress bars.
+         The bars fill up when the section scrolls into view
+         (handled in script.js). The percentages are honest,
+         self-assessed levels for a student — not "expert".
+         ======================================================== -->
+    <section class="section" id="skills">
+      <div class="container">
+        <p class="eyebrow reveal">Skills</p>
+        <h2 class="section-title reveal">Tools I am building fluency in</h2>
+
+        <div class="skills-grid">
+
+          <!-- data-level = how far the bar should fill (in %) -->
+          <article class="skill-card reveal">
+            <h3 class="skill-name">Mathematics</h3>
+            <p class="skill-desc">Probability, statistics, linear algebra and calculus — the language of models.</p>
+            <div class="bar"><div class="bar-fill" data-level="65"></div></div>
+            <span class="skill-percent">65%</span>
+          </article>
+
+          <article class="skill-card reveal">
+            <h3 class="skill-name">Python</h3>
+            <p class="skill-desc">Analysis and automation with pandas, NumPy and Matplotlib.</p>
+            <div class="bar"><div class="bar-fill" data-level="50"></div></div>
+            <span class="skill-percent">50%</span>
+          </article>
+
+          <article class="skill-card reveal">
+            <h3 class="skill-name">Power BI</h3>
+            <p class="skill-desc">Turning raw tables into clear, interactive dashboards.</p>
+            <div class="bar"><div class="bar-fill" data-level="70"></div></div>
+            <span class="skill-percent">70%</span>
+          </article>
+
+          <article class="skill-card reveal">
+            <h3 class="skill-name">Excel</h3>
+            <p class="skill-desc">Financial modelling, formulas and quick exploratory analysis.</p>
+            <div class="bar"><div class="bar-fill" data-level="78"></div></div>
+            <span class="skill-percent">78%</span>
+          </article>
+
+          <article class="skill-card reveal">
+            <h3 class="skill-name">SQLl</h3>
+            <p class="skill-desc"> Database querying, data manipulation, joins, filtering, and analytics using SQL.</p>
+            <div class="bar"><div class="bar-fill" data-level="68"></div></div>
+            <span class="skill-percent">68%</span>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ========================================================
+         5. PROJECTS SECTION
+         Four sample/learning projects as clean cards.
+         Numbered 01–04 because a portfolio reads as a catalogue.
+         ======================================================== -->
+    <section class="section" id="projects">
+      <div class="container">
+        <p class="eyebrow reveal">Projects</p>
+        <h2 class="section-title reveal">Things I have been building</h2>
+
+        <div class="projects-grid">
+
+          <article class="project-card reveal">
+            <span class="project-no">01</span>
+            <h3 class="project-title">Stock Market Data Analysis</h3>
+            <p class="project-desc">
+              Exploratory analysis of historical price data — returns, volatility
+              and moving averages — using Python and pandas.
+            </p>
+            <div class="tags">
+              <span>Python</span><span>pandas</span><span>Matplotlib</span>
+            </div>
+            <a href="#" class="project-link">View project →</a>
+          </article>
+
+          <article class="project-card reveal">
+            <span class="project-no">02</span>
+            <h3 class="project-title">Quant Trading Strategy Backtest</h3>
+            <p class="project-desc">
+              A rules-based strategy tested on past data to measure signal quality
+              and drawdown — before any real capital is ever involved.
+            </p>
+            <div class="tags">
+              <span>Python</span><span>Backtesting</span><span>Statistics</span>
+            </div>
+            <a href="#" class="project-link">View project →</a>
+          </article>
+
+          <article class="project-card reveal">
+            <span class="project-no">03</span>
+            <h3 class="project-title">Power BI Sales Dashboard</h3>
+            <p class="project-desc">
+              An interactive dashboard summarising sales trends, KPIs and regional
+              performance from a sample dataset.
+            </p>
+            <div class="tags">
+              <span>Power BI</span><span>DAX</span><span>Data Modelling</span>
+            </div>
+            <a href="#" class="project-link">View project →</a>
+          </article>
+
+          <article class="project-card reveal">
+            <span class="project-no">04</span>
+            <h3 class="project-title">Excel Financial Model</h3>
+            <p class="project-desc">
+              A structured model with assumptions, projections and sensitivity
+              analysis, built entirely in Excel.
+            </p>
+            <div class="tags">
+              <span>Excel</span><span>Modelling</span><span>Forecasting</span>
+            </div>
+            <a href="#" class="project-link">View project →</a>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ========================================================
+         6. CONTACT SECTION
+         Left: a short note + three placeholder links.
+         Right: a simple contact form. The form is UI only —
+         on submit, JavaScript shows a friendly confirmation.
+         ======================================================== -->
+   <section class="section contact-section" id="contact">
+  <div class="container contact-layout">
+
+    <div class="contact-right reveal">
+      <p class="eyebrow">CONTACT</p>
+
+      <div class="contact-socials">
+        <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#" class="social-icon"><i class="far fa-envelope"></i></a>
+      </div>
+
+      <form class="contact-form" id="contactForm" novalidate>
+        <div class="field">
+          <label for="name">Name</label>
+          <input type="text" id="name" placeholder="Your name" required>
+        </div>
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="you@example.com" required>
+        </div>
+
+        <div class="field">
+          <label for="message">Message</label>
+          <textarea id="message" rows="5" placeholder="Write a few lines..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Send message</button>
+        <p class="form-note" id="formNote"></p>
+      </form>
+    </div>
+
+  </div>
+</section>
+
+  <!-- ========================================================
+       FOOTER
+       ======================================================== -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span class="logo">AR</span>
+      <p>© <span id="year"></span> Arumuga Raja M </p>
+    </div>
+  </footer>
+
+
+  <!-- Our JavaScript (defer = run after the HTML has loaded) -->
+  <script src="script.js" defer></script>
+</body>
+</html>
