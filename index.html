@@ -62,6 +62,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         <li><a href="#about">About</a></li>
         <li><a href="#skills">Skills</a></li>
         <li><a href="#projects">Projects</a></li>
+        <li><a href="#certifications">Certifications</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
 
@@ -334,53 +335,52 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
       </div>
     </section>
 
-
-
-    <section class="section" id="achievements">
+    <section class="section" id="certifications">
   <div class="container">
 
-    <p class="eyebrow reveal">Achievements</p>
-    <h2 class="section-title reveal">Trading Achievements</h2>
+    <p class="eyebrow reveal">Certifications</p>
+    <h2 class="section-title reveal">Certifications & Achievements</h2>
 
-    <div class="projects-grid">
+    <div class="cert-grid">
 
-      <article class="project-card reveal">
+      <article class="cert-card reveal" onclick="openCertModal('trading')">
         <span class="project-no">01</span>
-        <h3 class="project-title">Funded Trader</h3>
-        <p class="project-desc">
-          Successfully completed AquaFutures evaluation and earned funded trader status.
-        </p>
+        <h3>Trading Certificates</h3>
+        <p>Funded trader, challenge passed and reward certificates.</p>
+        <span class="project-link">View Certificates →</span>
       </article>
 
-      <article class="project-card reveal">
+      <article class="cert-card reveal" onclick="openCertModal('internship')">
         <span class="project-no">02</span>
-        <h3 class="project-title">Multiple Evaluation Passes</h3>
-        <p class="project-desc">
-          Passed multiple proprietary futures trading evaluations using disciplined risk management.
-        </p>
+        <h3>Internship Certificates</h3>
+        <p>Internship completion and professional experience certificates.</p>
+        <span class="project-link">View Certificates →</span>
       </article>
 
-      <article class="project-card reveal">
+      <article class="cert-card reveal" onclick="openCertModal('technical')">
         <span class="project-no">03</span>
-        <h3 class="project-title">Trading Reward Recipient</h3>
-        <p class="project-desc">
-          Received performance-based reward through consistent execution and capital preservation.
-        </p>
+        <h3>Technical Certificates</h3>
+        <p>Python, SQL, Power BI, Excel and data analytics certificates.</p>
+        <span class="project-link">View Certificates →</span>
       </article>
 
-      <article class="project-card reveal">
+      <article class="cert-card reveal" onclick="openCertModal('academic')">
         <span class="project-no">04</span>
-        <h3 class="project-title">Challenge Passed</h3>
-        <p class="project-desc">
-          Successfully passed a $50,000 futures trading evaluation challenge.
-        </p>
+        <h3>Academic Achievements</h3>
+        <p>Workshops, college events, paper presentations and achievements.</p>
+        <span class="project-link">View Certificates →</span>
       </article>
 
     </div>
-
   </div>
 </section>
 
+
+<div class="cert-modal" id="certModal">
+  <button class="cert-close" onclick="closeCertModal()">×</button>
+  <h2 id="certModalTitle">Certificates</h2>
+  <div class="cert-modal-grid" id="certModalGrid"></div>
+</div>
 
     <!-- ========================================================
          6. CONTACT SECTION

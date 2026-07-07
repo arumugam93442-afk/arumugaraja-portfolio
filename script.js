@@ -374,5 +374,52 @@ if (candles) {
       form.reset();
     });
   }
+  const certificateData = {
+  trading: {
+    title: "Trading Certificates",
+    images: [
+      "images/certificates/prop-firm/aquafutures-funded-1.jpg",
+      "images/certificates/prop-firm/aquafutures-funded-2.jpg",
+      "images/certificates/prop-firm/aquafutures-reward.jpg",
+      "images/certificates/prop-firm/blueguardian-passed.jpg"
+    ]
+  },
 
+  internship: {
+    title: "Internship Certificates",
+    images: []
+  },
+
+  technical: {
+    title: "Technical Certificates",
+    images: []
+  },
+
+  academic: {
+    title: "Academic Achievements",
+    images: []
+  }
+};
+
+window.openCertModal = function (type) {
+  const modal = document.getElementById("certModal");
+  const title = document.getElementById("certModalTitle");
+  const grid = document.getElementById("certModalGrid");
+
+  title.textContent = certificateData[type].title;
+  grid.innerHTML = "";
+
+  certificateData[type].images.forEach(function (src) {
+    const img = document.createElement("img");
+    img.src = src;
+    img.alt = certificateData[type].title;
+    grid.appendChild(img);
+  });
+
+  modal.classList.add("active");
+};
+
+window.closeCertModal = function () {
+  document.getElementById("certModal").classList.remove("active");
+};
 });
