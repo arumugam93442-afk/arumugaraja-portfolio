@@ -1076,3 +1076,31 @@ img { max-width: 100%; display: block; }
     padding: 24px 18px;
   }
 }
+/* ===== MOBILE NAV FIX ===== */
+@media (max-width: 760px) {
+  .navbar {
+    z-index: 1000;
+  }
+
+  .logo {
+    z-index: 1002;
+  }
+
+  .hamburger {
+    position: relative;
+    z-index: 1003;
+  }
+
+  .nav-links {
+    width: min(78vw, 320px);
+    justify-content: flex-start;
+    padding-top: 150px;
+    gap: 38px;
+    background: rgba(10, 10, 10, 0.98);
+  }
+
+  .nav-links a {
+    font-size: 1.45rem;
+    font-weight: 500;
+  }
+}

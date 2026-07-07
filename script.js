@@ -28,11 +28,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const hamburger = document.getElementById("hamburger");
   const navLinks  = document.getElementById("navLinks");
 
-  hamburger.addEventListener("click", function () {
-    const isOpen = navLinks.classList.toggle("open");   // add/remove .open
-    hamburger.classList.toggle("open");                 // animate bars -> X
-    hamburger.setAttribute("aria-expanded", isOpen);    // accessibility
-  });
+ hamburger.addEventListener("click", function () {
+  const isOpen = navLinks.classList.toggle("open");
+  hamburger.classList.toggle("open");
+  hamburger.setAttribute("aria-expanded", isOpen);
+});
 
   // Close the menu after clicking any link (nice on mobile)
   navLinks.querySelectorAll("a").forEach(function (link) {
