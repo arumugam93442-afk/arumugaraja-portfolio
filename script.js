@@ -376,7 +376,7 @@ if (candles) {
   }
   const certificateData = {
   trading: {
-    title: "Trading Certificates",
+    title: "Prop Firm Certificates",
     images: [
       "images/certificates/prop-firm/aquafutures-funded-1.jpg",
       "images/certificates/prop-firm/aquafutures-funded-2.jpg",
