@@ -151,6 +151,7 @@ document.addEventListener("DOMContentLoaded", function () {
   "∫",
   "λ",
   "α",
+  "RTY",
   "P(A|B)",
   "Var(X)",
   "Black-Scholes"
